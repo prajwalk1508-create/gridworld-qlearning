@@ -41,8 +41,8 @@ def make_gif(env, agent, filename="agent.gif"):
         ax.set_xlim(0, env.size); ax.set_ylim(0, env.size)
         ax.set_xticks([]); ax.set_yticks([])
         fig.canvas.draw()
-        frame = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
-        frame = frame.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+        buf = np.asarray(fig.canvas.buffer_rgba())
+        frame = buf[:, :, :3].copy()   # drop alpha channel, keep RGB
         frames.append(frame)
         plt.close(fig)
 
